@@ -1,6 +1,10 @@
 meme_dict = {
             "CRINGE": "Sesuatu yang sangat aneh atau memalukan",
             "LOL": "Tanggapan umum terhadap sesuatu yang lucu",
+            "ROFL": "tanggapan terhadap lelucon",
+            "SHEESH": "sedikit ketidaksetujuan",
+            "CREEPY": "menakutkan, tidak menyenangkan",
+            "AGGRO":"untuk menjadi agresif/marah"
             }
 
 
@@ -23,4 +27,3 @@ while True:
         print (meme_dict)
     else :
         print ("jawabanmu error")
-    
