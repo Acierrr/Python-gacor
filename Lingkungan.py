@@ -14,7 +14,7 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='?', description=description, intents=intents)
+bot = commands.Bot(command_prefix='?', description=description, intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
@@ -25,8 +25,15 @@ async def hello (ctx):
     await ctx.send(f"Hi! I am a bot {bot.user}!")
 
 @bot.command()
-async def help (ctx):
-    await cttx.send (f"PANDUAN BOT \n ?tantangan = untuk challange harian \n ?fakta = untuk fakta terkini tentang sampah \n UNTUK ?recycle menggunakan panduan tertentu \n ?recycle_p = untuk mencari cara recylce sampah plastik \n ?recycle_so = untuk mencari cara recylce sampah organik/limbah rumah tangga ")
+async def help(ctx):
+    help_text = f"""
+PANDUAN BOT
+• ?tantangan = untuk challenge harian
+• ?fakta = untuk fakta terkini tentang sampah
+• ?recycle [material] = untuk informasi daur ulang (gunakan: plastik, kardus, kaca, dll)
+• ?hello = untuk menyapa bot
+"""
+    await ctx.send(help_text)
 
 @bot.command()
 async def tantangan(ctx):
@@ -50,8 +57,54 @@ async def fakta(ctx):
     await ctx.send(f"FAKTA TERKINI\n{random.choice(faktarandom)}")
 
 @bot.command()
-async def recycle(ctx):
-    await ctx.send("gunakan perintah ?recyle(nama sampah berupa singkatan, ketik ?help untuk meminta bantuan!)")
+async def recycle(ctx,material):
+    if material is None:
+        await ctx.send(f"Cara menggunakan:?recycle [nama_material]\nContoh: ?recycle plastik atau ?recycle kardus")
+        return
+    
+    material = material.lower()  
+
+    recycle_info = {
+        "plastik": """
+    DAUR ULANG PLASTIK:
+    1. Bersihkan dari sisa makanan/minuman
+    2. Lepaskan label dan tutup (jika berbeda jenis)
+    3. Keringkan sebelum disimpan
+    4. Pisahkan berdasarkan kode resin (angka dalam segitiga)
+    5. Bawa ke bank sampah atau dropbox daur ulang
+    """,
+        
+        "kardus": """
+    DAUR ULANG KARDUS:
+    1. Ratakan kardus untuk menghemat space
+    2. Lepaskan selotip, staples, dan plastik pembungkus
+    3. Pastikan kardus tidak basah atau berminyak
+    4. Kumpulkan dan bawa ke pengepul atau bank sampah
+    """,
+        
+        "kaca": """
+    DAUR ULANG KACA:
+    1. Cuci bersih dari sisa makanan/minuman
+    2. Pisahkan berdasarkan warna (jernih, hijau, cokelat)
+    3. Hati-hati dengan pecahan kaca
+    4. Jangan campur dengan keramik atau piring kaca
+    """,
+        
+        "kaleng": """
+    DAUR ULANG KALENG:
+    1. Cuci bersih dari sisa makanan/minuman
+    2. Keringkan sebelum disimpan
+    3. Ratakan atau tekan untuk menghemat ruang
+    4. Pisahkan kaleng aluminium dan baja
+    5. Bawa ke pusat daur ulang atau bank sampah
+    """
+    }
+
+    if material in recycle_info:
+        await ctx.send(recycle_info[material])
+    else:
+        await ctx.send(f"Material '{material}' tidak ditemukan.")
 
 
-bot.run(token)
+
+bot.run('TOKEN')
